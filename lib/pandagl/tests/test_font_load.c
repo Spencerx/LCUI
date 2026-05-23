@@ -16,6 +16,7 @@
 #define GetSegoeUIFont(S, W) pd_font_library_get_font_id("Segoe UI", S, W)
 #define GetArialFont(S, W) pd_font_library_get_font_id("Arial", S, W)
 
+#ifdef _WIN32
 static void test_segoe_ui_font_load(void)
 {
         pd_font_t *font;
@@ -170,6 +171,7 @@ static void test_arial_font_load(void)
                                 PD_FONT_WEIGHT_BOLD);
         }
 }
+#endif
 
 void test_pandagl_font_load(void)
 {
