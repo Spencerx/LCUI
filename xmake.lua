@@ -38,16 +38,17 @@ rule("tests.runnable")
         local rundir = opt.rundir or target:rundir()
         local envs = opt.runenvs
         local exec_opt = {curdir = rundir, envs = envs}
+        local exepath = path.absolute(target:targetfile())
         if has_config("memcheck") then
             local cmd
             if is_plat("windows") then
-                cmd = {"drmemory", "--", target:targetfile()}
+                cmd = {"drmemory", "--", exepath}
             else
                 cmd = {"valgrind",
                        "--leak-check=full",
                        "--error-exitcode=42",
                        "--num-callers=20",
-                       target:targetfile()}
+                       exepath}
             end
             for _, a in ipairs(args) do
                 table.insert(cmd, a)
@@ -59,7 +60,7 @@ rule("tests.runnable")
             return ok ~= nil, ok == nil and "memcheck failed" or nil
         end
         local ok = try { function ()
-            os.execv(target:targetfile(), args, exec_opt)
+            os.execv(exepath, args, exec_opt)
             return true
         end }
         return ok ~= nil, ok == nil and "test failed" or nil
