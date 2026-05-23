@@ -65,7 +65,7 @@ jobs:
       - name: Run all tests with memcheck
         if: runner.os == 'Linux'
         run: |
-          xmake f --memcheck=y
+          xmake f -m debug --memcheck=y
           xmake test
 
       - name: Upload reports to Codecov
